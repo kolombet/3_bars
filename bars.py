@@ -44,11 +44,11 @@ def get_smallest_bar(data):
 def get_closest_bar(data, longitude, latitude):
     bars = data["features"]
     coordinates = bars[0]["geometry"]["coordinates"]
-    min_distance = math.sqrt((coordinates[0] - latitude) ** 2 + (coordinates[1] - longitude) ** 2)
+    min_distance = calculate_distance(coordinates[0], latitude, coordinates[1], longitude)
     min_bar = bars[0]
     for bar in bars:
         coordinates = bar["geometry"]["coordinates"]
-        distance = math.sqrt((coordinates[0] - latitude) ** 2 + (coordinates[1] - longitude) ** 2)
+        distance = calculate_distance(coordinates[0], latitude, coordinates[1], longitude)
         if distance < min_distance:
             min_distance = distance
             min_bar = bar
