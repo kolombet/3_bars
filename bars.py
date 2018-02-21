@@ -13,7 +13,6 @@ def load_data(filepath):
     data = file.read()
     file.close()
     return json.loads(data)
-    pass
 
 
 def get_biggest_bar(data):
