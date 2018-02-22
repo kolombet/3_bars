@@ -10,34 +10,17 @@ def load_data(filepath):
         print("file not found")
         return -1
     json_file = codecs.open(filepath, 'r', 'utf-8')
-    bar_data = json_file.read()
+    bars = json_file.read()
     json_file.close()
-    return json.loads(bar_data)
+    return json.loads(bars)
 
 
 def get_biggest_bar(data):
-    bars = data["features"]
-    max_value = bars[0]["properties"]["Attributes"]["SeatsCount"]
-    max_bar = bars[0]
-    for bar in bars:
-        count = bar["properties"]["Attributes"]["SeatsCount"]
-        if count > max_value:
-            max_value = count
-            max_bar = bar
-    return max_bar["properties"]["Attributes"]["Name"] + "(" + str(bar["geometry"]["coordinates"][0]) + " " + str(bar["geometry"]["coordinates"][1]) + ")"
+    return max(bar["properties"]["Attributes"]["SeatsCount"] for bar in data["features"])
 
 
 def get_smallest_bar(data):
-    bars = data["features"]
-    min_value = bars[0]["properties"]["Attributes"]["SeatsCount"]
-    min_bar = bars[0]
-    for bar in bars:
-        count = bar["properties"]["Attributes"]["SeatsCount"]
-        # if zero places in bar - it's wrong data or imaginary bar
-        if count != 0 and count < min_value:
-            min_value = count
-            min_bar = bar
-    return min_bar["properties"]["Attributes"]["Name"] + "(" + str(bar["geometry"]["coordinates"][0]) + " " + str(bar["geometry"]["coordinates"][1]) + ")"
+    return min(bar["properties"]["Attributes"]["SeatsCount"] for bar in data["features"])
 
 
 def get_closest_bar(data, longitude, latitude):
@@ -51,12 +34,12 @@ def get_closest_bar(data, longitude, latitude):
         if distance < min_distance:
             min_distance = distance
             min_bar = bar
-            #print(min_bar["properties"]["Attributes"]["Name"] + " " + str(bar["geometry"]["coordinates"][0]) + " " + str(bar["geometry"]["coordinates"][1]) + " dis " + str(distance)) 
     return min_bar["properties"]["Attributes"]["Name"] + "(" + str(bar["geometry"]["coordinates"][0]) + " " + str(bar["geometry"]["coordinates"][1]) + ")"
 
 
 def calculate_distance(from_x, from_y, to_x, to_y):
     return math.sqrt((from_x - to_x) ** 2 + (from_y - to_y) ** 2)
+
 
 def request_float():
     user_input = input()
@@ -66,14 +49,15 @@ def request_float():
     except ValueError:
         print("value not number - please try again")
         return request_float()
-    
+
+
 if __name__ == '__main__':
-    bar_data = load_data("bar-data.json")
-    if bar_data:
-        smallest = get_smallest_bar(bar_data)
-        print("smallest bar: " + smallest)
-        biggest = get_biggest_bar(bar_data)
-        print("biggest bar: " + biggest)
+    bar_list = load_data("bar-data.json")
+    if bar_list:
+        smallest = get_smallest_bar(bar_list)
+        print("smallest bar: " + str(smallest))
+        biggest = get_biggest_bar(bar_list)
+        print("biggest bar: " + str(biggest))
         print("please input your coordinates to get nearest bar name")
         print("enter latitude:")
         input_latitude = request_float()
@@ -81,4 +65,3 @@ if __name__ == '__main__':
         input_longitude = request_float()
         closest = get_closest_bar(bar_data, input_longitude, input_latitude)
         print("closest bar: " + closest)
-    pass
