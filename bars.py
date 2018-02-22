@@ -9,10 +9,10 @@ def load_data(filepath):
     if not is_file:
         print("file not found")
         return -1
-    file = codecs.open(filepath, 'r', 'utf-8')
-    data = file.read()
-    file.close()
-    return json.loads(data)
+    json_file = codecs.open(filepath, 'r', 'utf-8')
+    bar_data = json_file.read()
+    json_file.close()
+    return json.loads(bar_data)
 
 
 def get_biggest_bar(data):
@@ -57,14 +57,26 @@ def get_closest_bar(data, longitude, latitude):
 def calculate_distance(from_x, from_y, to_x, to_y):
     return math.sqrt((from_x - to_x) ** 2 + (from_y - to_y) ** 2)
 
-
+def request_float():
+    user_input = input()
+    try:
+        float(user_input)
+    except ValueError:
+        print "value not number - please try again"
+        return request_float()
+    
 if __name__ == '__main__':
-    bar_data = load_data("data.json")
+    bar_data = load_data("bar-data.json")
     if bar_data:
         smallest = get_smallest_bar(bar_data)
         print("smallest bar: " + smallest)
         biggest = get_biggest_bar(bar_data)
         print("biggest bar: " + biggest)
-        closest = get_closest_bar(bar_data, 55.856233, 37.584603)
+        print("please input your coordinates to get nearest bar name")
+        print("enter latitude:")
+        input_latitude = request_float()
+        print("enter longitude:")
+        input_longitude = request_float()
+        closest = get_closest_bar(bar_data, input_latitude, input_longitude)
         print("closest bar: " + closest)
     pass
