@@ -7,6 +7,12 @@
 
 Например, если ввести коодинаты 55.740575, 37.616892 найдет заведение "red code bar"
 
+# Как использовать скрипт
+
+При вызове скрипта
+..*в слепке данных ищутся бары с минимальным/максимальным количеством мест, и эти количества выводятся в консоль.
+..*у пользователя запрашивается ширина/долгота, и по этим данным в слепке ищется бар, ближайший к этим координатам, пользователю возвращается название бара и координаты
+
 # Problems
 
 I used min/max functions to find smallest/biggest bar. Not sure, what means - "самый большой бар", what function needs to search - seats count, bar area or something else. And what function needs to return: size of bar, name, coordinates or just dictionary  from json, containing all those properties.  Conditions of task are blurry, so they would be misinterpreted.
