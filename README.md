@@ -7,6 +7,13 @@
 
 Например, если ввести коодинаты 55.740575, 37.616892 найдет заведение "red code bar"
 
+# Problems
+
+I used min/max functions to find smallest/biggest bar. Not sure, what means - "самый большой бар", what function needs to search - seats count, bar area or something else. And what function needs to return: size of bar, name, coordinates or just dictionary  from json, containing all those properties.  Conditions of task are blurry, so they would be misinterpreted.
+
+And I haven't found, how to use min/max functions, to get index of dictionary in list, not just value. Not sure if it possible at all.
+
+
 # Как запустить
 
 Скрипт требует для своей работы установленного интерпретатора Python версии 3.5
