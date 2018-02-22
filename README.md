@@ -13,11 +13,11 @@
 ..*в слепке данных ищутся бары с минимальным/максимальным количеством мест, и эти количества выводятся в консоль.
 ..*у пользователя запрашивается ширина/долгота, и по этим данным в слепке ищется бар, ближайший к этим координатам, пользователю возвращается название бара и координаты
 
-# Problems
+#проблемы
+Я использовал функции min/max, чтобы найти самый маленький/большой бар. Не уверен, что значит - "самый большой бар", что функция должна найти - количество мест, площадь бара или что-либо другое.
+Непонятно, что функция должна вернуть - размер этого бара, название, координаты, или просто словарь, содержащий все поля из json. Описание задачи не четкое, поэтому может быть неправильно реализованно.
 
-I used min/max functions to find smallest/biggest bar. Not sure, what means - "самый большой бар", what function needs to search - seats count, bar area or something else. And what function needs to return: size of bar, name, coordinates or just dictionary  from json, containing all those properties.  Conditions of task are blurry, so they would be misinterpreted.
-
-And I haven't found, how to use min/max functions, to get index of dictionary in list, not just value. Not sure if it possible at all.
+Также я не нашел, как использовать функции min/max, чтобы получить индекс словаря с информцией о баре. Функции min/max возращают только минимальное значение, но не ключ, по которому лежит нужный нам словарь
 
 
 # Как запустить

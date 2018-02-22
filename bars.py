@@ -4,27 +4,26 @@ import codecs
 import math
 
 
-def load_data(filepath):
-    is_file = Path(filepath).is_file()
+def load_json(file_path):
+    is_file = Path(file_path).is_file()
     if not is_file:
         print("file not found")
         return -1
-    json_file = codecs.open(filepath, 'r', 'utf-8')
+    json_file = codecs.open(file_path, 'r', 'utf-8')
     bars = json_file.read()
     json_file.close()
-    return json.loads(bars)
+    return json.loads(bars)["features"]
 
 
-def get_biggest_bar(data):
-    return max(bar["properties"]["Attributes"]["SeatsCount"] for bar in data["features"])
+def get_biggest_bar(bars):
+    return max(bar["properties"]["Attributes"]["SeatsCount"] for bar in bars)
 
 
-def get_smallest_bar(data):
-    return min(bar["properties"]["Attributes"]["SeatsCount"] for bar in data["features"])
+def get_smallest_bar(bars):
+    return min(bar["properties"]["Attributes"]["SeatsCount"] for bar in bars)
 
 
-def get_closest_bar(data, longitude, latitude):
-    bars = data["features"]
+def get_closest_bar(bars, longitude, latitude):
     coordinates = bars[0]["geometry"]["coordinates"]
     min_distance = calculate_distance(latitude, longitude, coordinates[1], coordinates[0])
     min_bar = bars[0]
@@ -34,7 +33,10 @@ def get_closest_bar(data, longitude, latitude):
         if distance < min_distance:
             min_distance = distance
             min_bar = bar
-    return min_bar["properties"]["Attributes"]["Name"] + "(" + str(bar["geometry"]["coordinates"][0]) + " " + str(bar["geometry"]["coordinates"][1]) + ")"
+    bar_name = min_bar["properties"]["Attributes"]["Name"]
+    latitude_final = min_bar["geometry"]["coordinates"][0]
+    longitude_final = min_bar["geometry"]["coordinates"][1]
+    return bar_name + "(" + str(latitude_final) + " " + str(longitude_final) + ")"
 
 
 def calculate_distance(from_x, from_y, to_x, to_y):
@@ -52,7 +54,7 @@ def request_float():
 
 
 if __name__ == '__main__':
-    bar_list = load_data("bar-data.json")
+    bar_list = load_json("bar-data.json")
     if bar_list:
         smallest = get_smallest_bar(bar_list)
         print("smallest bar: " + str(smallest))
@@ -63,5 +65,5 @@ if __name__ == '__main__':
         input_latitude = request_float()
         print("enter longitude:")
         input_longitude = request_float()
-        closest = get_closest_bar(bar_data, input_longitude, input_latitude)
+        closest = get_closest_bar(bar_list, input_longitude, input_latitude)
         print("closest bar: " + closest)
