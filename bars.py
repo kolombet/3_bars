@@ -24,7 +24,7 @@ def get_biggest_bar(data):
         if count > max_value:
             max_value = count
             max_bar = bar
-    return max_bar["properties"]["Attributes"]["Name"]
+    return max_bar["properties"]["Attributes"]["Name"] + "(" + str(bar["geometry"]["coordinates"][0]) + " " + str(bar["geometry"]["coordinates"][1]) + ")"
 
 
 def get_smallest_bar(data):
@@ -37,21 +37,22 @@ def get_smallest_bar(data):
         if count != 0 and count < min_value:
             min_value = count
             min_bar = bar
-    return min_bar["properties"]["Attributes"]["Name"]
+    return min_bar["properties"]["Attributes"]["Name"] + "(" + str(bar["geometry"]["coordinates"][0]) + " " + str(bar["geometry"]["coordinates"][1]) + ")"
 
 
 def get_closest_bar(data, longitude, latitude):
     bars = data["features"]
     coordinates = bars[0]["geometry"]["coordinates"]
-    min_distance = calculate_distance(coordinates[0], latitude, coordinates[1], longitude)
+    min_distance = calculate_distance(latitude, longitude, coordinates[1], coordinates[0])
     min_bar = bars[0]
     for bar in bars:
         coordinates = bar["geometry"]["coordinates"]
-        distance = calculate_distance(coordinates[0], latitude, coordinates[1], longitude)
+        distance = calculate_distance(latitude, longitude, coordinates[1], coordinates[0])
         if distance < min_distance:
             min_distance = distance
             min_bar = bar
-    return min_bar["properties"]["Attributes"]["Name"]
+            #print(min_bar["properties"]["Attributes"]["Name"] + " " + str(bar["geometry"]["coordinates"][0]) + " " + str(bar["geometry"]["coordinates"][1]) + " dis " + str(distance)) 
+    return min_bar["properties"]["Attributes"]["Name"] + "(" + str(bar["geometry"]["coordinates"][0]) + " " + str(bar["geometry"]["coordinates"][1]) + ")"
 
 
 def calculate_distance(from_x, from_y, to_x, to_y):
@@ -60,9 +61,10 @@ def calculate_distance(from_x, from_y, to_x, to_y):
 def request_float():
     user_input = input()
     try:
-        float(user_input)
+        user_input_parsed = float(user_input)
+        return user_input_parsed
     except ValueError:
-        print "value not number - please try again"
+        print("value not number - please try again")
         return request_float()
     
 if __name__ == '__main__':
@@ -77,6 +79,6 @@ if __name__ == '__main__':
         input_latitude = request_float()
         print("enter longitude:")
         input_longitude = request_float()
-        closest = get_closest_bar(bar_data, input_latitude, input_longitude)
+        closest = get_closest_bar(bar_data, input_longitude, input_latitude)
         print("closest bar: " + closest)
     pass
