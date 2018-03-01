@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 def load_json(file_path):
-    json_file = codecs.open(file_path, 'r', 'utf-8')
+    json_file = codecs.open(file_path, "r", "utf-8")
     bars = json_file.read()
     json_file.close()
     return json.loads(bars)["features"]
@@ -51,7 +51,7 @@ def input_float():
         print("error: value not number")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", "--file", dest="bars", help="custom bars data file path")
     args = parser.parse_args()
