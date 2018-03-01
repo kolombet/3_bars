@@ -22,8 +22,9 @@ def get_smallest_bar(bars):
 
 
 def get_closest_bar(bars, longitude, latitude):
-    return min(bars, key=lambda bar: calculate_distance(latitude, longitude, get_latitude(bar), get_longitude(bar)))
-    
+    return min(bars, key=lambda bar: calculate_distance(
+        latitude, longitude, get_latitude(bar), get_longitude(bar)))
+
 
 def calculate_distance(from_x, from_y, to_x, to_y):
     return math.sqrt((from_x - to_x) ** 2 + (from_y - to_y) ** 2)
@@ -40,18 +41,19 @@ def get_name(bar):
 def get_longitude(bar):
     return bar["geometry"]["coordinates"][1]
 
-    
+
 def get_latitude(bar):
     return bar["geometry"]["coordinates"][0]
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", "--file", dest="bars", help="custom bars data file path")
+    help = "custom bars data file path"
+    parser.add_argument("-f", "--file", dest="bars", help="help")
     args = parser.parse_args()
 
     bars_path = args.bars
-    if bars_path == None:
+    if bars_path is None:
         bars_path = "bars.json"
     print("using bars file: {}".format(bars_path))
 
@@ -62,9 +64,11 @@ if __name__ == "__main__":
     bar_list = load_json(bars_path)
     smallest = get_smallest_bar(bar_list)
     template = "{} bar name: {} seats count: {}"
-    print(template.format("smallest", get_name(smallest), str(get_seats_count(smallest))))
+    print(template.format("smallest", get_name(smallest),
+          str(get_seats_count(smallest))))
     biggest = get_biggest_bar(bar_list)
-    print(template.format("biggest", get_name(biggest), str(get_seats_count(biggest))))
+    print(template.format("biggest", get_name(biggest),
+          str(get_seats_count(biggest))))
 
     print("please input your coordinates to get nearest bar name")
 
@@ -83,8 +87,5 @@ if __name__ == "__main__":
         sys.exit()
 
     closest = get_closest_bar(bar_list, input_longitude, input_latitude)
-    print("closest bar: {0}({1} {2})".format(get_name(closest), str(get_longitude(closest)), str(get_latitude(closest))))
-    
-        
-
-    
+    print("closest bar: {0}({1} {2})".format(get_name(closest),
+          str(get_longitude(closest)), str(get_latitude(closest))))
