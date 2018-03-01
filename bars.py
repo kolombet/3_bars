@@ -3,16 +3,14 @@ import codecs
 import math
 import sys
 import argparse
-# import os
 import os.path
-from pathlib import Path
 
 
 def load_json(file_path):
-    json_file = codecs.open(file_path, "r", "utf-8")
-    bars = json_file.read()
-    json_file.close()
-    return json.loads(bars)["features"]
+    with codecs.open(file_path, "r", "utf-8") as json_file:
+        bars = json_file.read()
+        json_file.close()
+        return json.loads(bars)["features"]
 
 
 def get_biggest_bar(bars):
