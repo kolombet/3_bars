@@ -14,40 +14,35 @@ def load_json(file_path):
 
 
 def get_biggest_bar(bars):
-    return max(bar["properties"]["Attributes"]["SeatsCount"] for bar in bars)
+    return max(bars, key=lambda bar: get_seats_count(bar))
 
 
 def get_smallest_bar(bars):
-    return min(bar["properties"]["Attributes"]["SeatsCount"] for bar in bars)
+    return min(bars, key=lambda bar: get_seats_count(bar))
 
 
 def get_closest_bar(bars, longitude, latitude):
-    coordinates = bars[0]["geometry"]["coordinates"]
-    min_distance = calculate_distance(latitude, longitude, coordinates[1], coordinates[0])
-    min_bar = bars[0]
-    for bar in bars:
-        coordinates = bar["geometry"]["coordinates"]
-        distance = calculate_distance(latitude, longitude, coordinates[1], coordinates[0])
-        if distance < min_distance:
-            min_distance = distance
-            min_bar = bar
-    bar_name = min_bar["properties"]["Attributes"]["Name"]
-    latitude_final = min_bar["geometry"]["coordinates"][0]
-    longitude_final = min_bar["geometry"]["coordinates"][1]
-    return "{0}({1} {2})".format(bar_name, str(latitude_final), str(longitude_final))
-    # return bar_name + "(" + str(latitude_final) + " " + str(longitude_final) + ")"
-
+    return min(bars, key=lambda bar: calculate_distance(latitude, longitude, get_latitude(bar), get_longitude(bar)))
+    
 
 def calculate_distance(from_x, from_y, to_x, to_y):
     return math.sqrt((from_x - to_x) ** 2 + (from_y - to_y) ** 2)
 
 
-def input_float():
-    user_input = input()
-    try:
-        return float(user_input)
-    except ValueError:
-        print("error: value not number")
+def get_seats_count(bar):
+    return bar["properties"]["Attributes"]["SeatsCount"]
+
+
+def get_name(bar):
+    return bar["properties"]["Attributes"]["Name"]
+
+
+def get_longitude(bar):
+    return bar["geometry"]["coordinates"][1]
+
+    
+def get_latitude(bar):
+    return bar["geometry"]["coordinates"][0]
 
 
 if __name__ == "__main__":
@@ -66,16 +61,29 @@ if __name__ == "__main__":
 
     bar_list = load_json(bars_path)
     smallest = get_smallest_bar(bar_list)
-    print("smallest bar: {}".format(str(smallest)))
+    template = "{} bar name: {} seats count: {}"
+    print(template.format("smallest", get_name(smallest), str(get_seats_count(smallest))))
     biggest = get_biggest_bar(bar_list)
-    print("biggest bar: {}".format(str(biggest)))
+    print(template.format("biggest", get_name(biggest), str(get_seats_count(biggest))))
+
     print("please input your coordinates to get nearest bar name")
-    print("enter latitude:")
-    input_latitude = input_float()
+
     print("enter longitude:")
-    input_longitude = input_float()
+    try:
+        input_longitude = float(input())
+    except ValueError:
+        print("bad longitude value (must ")
+        sys.exit()
+
+    print("enter latitude:")
+    try:
+        input_latitude = float(input())
+    except ValueError:
+        print("bad latitude value")
+        sys.exit()
+
     closest = get_closest_bar(bar_list, input_longitude, input_latitude)
-    print("closest bar: {}".format(closest))
+    print("closest bar: {0}({1} {2})".format(get_name(closest), str(get_longitude(closest)), str(get_latitude(closest))))
     
         
 
