@@ -21,6 +21,29 @@
 
 
 # Как запустить
+ 
+Для работы программы JSON файл необходим, требуется:
+1. Зарегистрироваться на сайте data.mos.ru
+2. Получить ключ api в личном кабинете
+3. Скачать файл через rest api, по ссылке https://apidata.mos.ru/v1/features/1796?api_key={api_key}. 
+4. Назвать его bars.json и положить его в директорию с скриптом bars.py
+
+По умолчанию скрипт ищет в директории файл bars.json, однако можно указать файл в ручную с помощью параметра -file или --f
+
+```
+
+python3 bars.py --f data.json
+using bars file: data.json
+smallest bar: 0
+biggest bar: 450
+please input your coordinates to get nearest bar name
+enter latitude:
+35
+enter longitude:
+54
+closest bar: Таверна(37.920969 55.699888)
+
+```
 
 Скрипт требует для своей работы установленного интерпретатора Python версии 3.5
 
@@ -34,6 +57,8 @@ $ python bars.py # possibly requires call of python3 executive instead of just p
 ```
 
 Запуск на Windows происходит аналогично.
+
+
 
 # Цели проекта
 
