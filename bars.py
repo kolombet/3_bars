@@ -3,13 +3,12 @@ import codecs
 import math
 import sys
 import argparse
+# import os
+import os.path
 from pathlib import Path
 
+
 def load_json(file_path):
-    is_file = Path(file_path).is_file()
-    if not is_file:
-        print("file not found")
-        return -1
     json_file = codecs.open(file_path, 'r', 'utf-8')
     bars = json_file.read()
     json_file.close()
@@ -44,14 +43,12 @@ def calculate_distance(from_x, from_y, to_x, to_y):
     return math.sqrt((from_x - to_x) ** 2 + (from_y - to_y) ** 2)
 
 
-def request_float():
+def input_float():
     user_input = input()
     try:
-        user_input_parsed = float(user_input)
-        return user_input_parsed
+        return float(user_input)
     except ValueError:
-        print("value not number - please try again")
-        return request_float()
+        print("error: value not number")
 
 
 if __name__ == '__main__':
@@ -62,18 +59,25 @@ if __name__ == '__main__':
     bars_path = args.bars
     if bars_path == None:
         bars_path = "bars.json"
-    print("looking for data in file: " +  bars_path)
+    print("using bars file: " +  bars_path)
+
+    if not os.path.isfile(bars_path):
+        print("error: can't find file " + bars_path)
+        sys.exit()
 
     bar_list = load_json(bars_path)
-    if bar_list:
-        smallest = get_smallest_bar(bar_list)
-        print("smallest bar: " + str(smallest))
-        biggest = get_biggest_bar(bar_list)
-        print("biggest bar: " + str(biggest))
-        print("please input your coordinates to get nearest bar name")
-        print("enter latitude:")
-        input_latitude = request_float()
-        print("enter longitude:")
-        input_longitude = request_float()
-        closest = get_closest_bar(bar_list, input_longitude, input_latitude)
-        print("closest bar: " + closest)
+    smallest = get_smallest_bar(bar_list)
+    print("smallest bar: " + str(smallest))
+    biggest = get_biggest_bar(bar_list)
+    print("biggest bar: " + str(biggest))
+    print("please input your coordinates to get nearest bar name")
+    print("enter latitude:")
+    input_latitude = input_float()
+    print("enter longitude:")
+    input_longitude = input_float()
+    closest = get_closest_bar(bar_list, input_longitude, input_latitude)
+    print("closest bar: " + closest)
+    
+        
+
+    
