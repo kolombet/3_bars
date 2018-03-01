@@ -1,8 +1,9 @@
 import json
-from pathlib import Path
 import codecs
 import math
-
+import sys
+import argparse
+from pathlib import Path
 
 def load_json(file_path):
     is_file = Path(file_path).is_file()
@@ -54,7 +55,21 @@ def request_float():
 
 
 if __name__ == '__main__':
-    bar_list = load_json("bar-data.json")
+    #parser = ArgumentParser()
+    #parser.add_argument("-f", "--file", dest="bars", help="custom bars data file path")
+    #args = parser.parse_args()
+
+    args_len = len(sys.argv)
+    if args_len == 1:
+        bars_path = "bar-data.json"
+        print("using default bar path: " + bars_path)
+    elif args_len == 2:
+        bars_path = sys.argv[1]
+        print("using custom bar path: " + bars_path)
+    elif args_len > 2:
+        print("you must specify only one parameter: path to file with bars data relative to this directory")
+    
+    bar_list = load_json(bars_path)
     if bar_list:
         smallest = get_smallest_bar(bar_list)
         print("smallest bar: " + str(smallest))
