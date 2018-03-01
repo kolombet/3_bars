@@ -52,14 +52,12 @@ def print_nearest_bar(bar_list):
     try:
         input_longitude = float(input())
     except ValueError:
-        print("bad longitude value (must ")
-        sys.exit()
+        return None
     print("enter latitude:")
     try:
         input_latitude = float(input())
     except ValueError:
-        print("bad latitude value")
-        sys.exit()
+        return None
     closest = get_closest_bar(bar_list, input_longitude, input_latitude)
     print("closest bar: {0}({1} {2})".format(get_name(closest),
           str(get_longitude(closest)), str(get_latitude(closest))))
@@ -76,7 +74,7 @@ def get_bars_path():
     return bars_path
 
 
-def print_bar_info(bar_list):
+def print_bar_size(bar_list):
     template = "bar name {}, seats count {}"
     print("smallest bar:")
     bar = get_smallest_bar(bar_list)
@@ -93,6 +91,8 @@ if __name__ == "__main__":
         print("error: can't find file {}".format(bars_path))
         sys.exit()
 
-    bar_list = load_json(bars_path)
-    print_bar_info(bar_list)
-    print_nearest_bar(bar_list)
+    bars = load_json(bars_path)
+    print_bar_size(bars)
+    if not print_nearest_bar(bars):
+        print("error: bad value, please input number")
+        sys.exit()
