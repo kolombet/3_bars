@@ -46,46 +46,53 @@ def get_latitude(bar):
     return bar["geometry"]["coordinates"][0]
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    help = "custom bars data file path"
-    parser.add_argument("-f", "--file", dest="bars", help="help")
-    args = parser.parse_args()
-
-    bars_path = args.bars
-    if bars_path is None:
-        bars_path = "bars.json"
-    print("using bars file: {}".format(bars_path))
-
-    if not os.path.isfile(bars_path):
-        print("error: can't find file {}".format(bars_path))
-        sys.exit()
-
-    bar_list = load_json(bars_path)
-    smallest = get_smallest_bar(bar_list)
-    template = "{} bar name: {} seats count: {}"
-    print(template.format("smallest", get_name(smallest),
-          str(get_seats_count(smallest))))
-    biggest = get_biggest_bar(bar_list)
-    print(template.format("biggest", get_name(biggest),
-          str(get_seats_count(biggest))))
-
+def print_nearest_bar(bar_list):
     print("please input your coordinates to get nearest bar name")
-
     print("enter longitude:")
     try:
         input_longitude = float(input())
     except ValueError:
         print("bad longitude value (must ")
         sys.exit()
-
     print("enter latitude:")
     try:
         input_latitude = float(input())
     except ValueError:
         print("bad latitude value")
         sys.exit()
-
     closest = get_closest_bar(bar_list, input_longitude, input_latitude)
     print("closest bar: {0}({1} {2})".format(get_name(closest),
           str(get_longitude(closest)), str(get_latitude(closest))))
+
+
+def get_bars_path():
+    parser = argparse.ArgumentParser()
+    help = "custom bars data file path"
+    parser.add_argument("-f", "--file", dest="bars", help="help")
+    args = parser.parse_args()
+    bars_path = args.bars
+    if bars_path is None:
+        bars_path = "bars.json"
+    return bars_path
+
+
+def print_bar_info(bar_list):
+    template = "bar name {}, seats count {}"
+    print("smallest bar:")
+    bar = get_smallest_bar(bar_list)
+    print(template.format(get_name(bar), str(get_seats_count(bar))))
+    print("biggest bar:")
+    bar = get_biggest_bar(bar_list)
+    print(template.format(get_name(bar), str(get_seats_count(bar))))
+
+
+if __name__ == "__main__":
+    bars_path = get_bars_path()
+
+    if not os.path.isfile(bars_path):
+        print("error: can't find file {}".format(bars_path))
+        sys.exit()
+
+    bar_list = load_json(bars_path)
+    print_bar_info(bar_list)
+    print_nearest_bar(bar_list)
