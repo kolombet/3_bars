@@ -34,7 +34,8 @@ def get_closest_bar(bars, longitude, latitude):
     bar_name = min_bar["properties"]["Attributes"]["Name"]
     latitude_final = min_bar["geometry"]["coordinates"][0]
     longitude_final = min_bar["geometry"]["coordinates"][1]
-    return bar_name + "(" + str(latitude_final) + " " + str(longitude_final) + ")"
+    return "{0}({1} {2})".format(bar_name, str(latitude_final), str(longitude_final))
+    # return bar_name + "(" + str(latitude_final) + " " + str(longitude_final) + ")"
 
 
 def calculate_distance(from_x, from_y, to_x, to_y):
@@ -57,24 +58,24 @@ if __name__ == "__main__":
     bars_path = args.bars
     if bars_path == None:
         bars_path = "bars.json"
-    print("using bars file: " +  bars_path)
+    print("using bars file: {}".format(bars_path))
 
     if not os.path.isfile(bars_path):
-        print("error: can't find file " + bars_path)
+        print("error: can't find file {}".format(bars_path))
         sys.exit()
 
     bar_list = load_json(bars_path)
     smallest = get_smallest_bar(bar_list)
-    print("smallest bar: " + str(smallest))
+    print("smallest bar: {}".format(str(smallest)))
     biggest = get_biggest_bar(bar_list)
-    print("biggest bar: " + str(biggest))
+    print("biggest bar: {}".format(str(biggest)))
     print("please input your coordinates to get nearest bar name")
     print("enter latitude:")
     input_latitude = input_float()
     print("enter longitude:")
     input_longitude = input_float()
     closest = get_closest_bar(bar_list, input_longitude, input_latitude)
-    print("closest bar: " + closest)
+    print("closest bar: {}".format(closest))
     
         
 
