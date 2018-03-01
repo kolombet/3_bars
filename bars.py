@@ -55,20 +55,15 @@ def request_float():
 
 
 if __name__ == '__main__':
-    #parser = ArgumentParser()
-    #parser.add_argument("-f", "--file", dest="bars", help="custom bars data file path")
-    #args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--file", dest="bars", help="custom bars data file path")
+    args = parser.parse_args()
 
-    args_len = len(sys.argv)
-    if args_len == 1:
-        bars_path = "bar-data.json"
-        print("using default bar path: " + bars_path)
-    elif args_len == 2:
-        bars_path = sys.argv[1]
-        print("using custom bar path: " + bars_path)
-    elif args_len > 2:
-        print("you must specify only one parameter: path to file with bars data relative to this directory")
-    
+    bars_path = args.bars
+    if bars_path == None:
+        bars_path = "bars.json"
+    print("looking for data in file: " +  bars_path)
+
     bar_list = load_json(bars_path)
     if bar_list:
         smallest = get_smallest_bar(bar_list)
