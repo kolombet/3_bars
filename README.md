@@ -38,16 +38,15 @@ using bars file: custom.json
 
 ```bash
 
-$ python3 ./bars.py
-using bars file: bars.json
-smallest bar name: Сушистор seats count: 0
-biggest bar name: Спорт бар «Красная машина» seats count: 450
+$ python3 bars.py -f ./data.json
 please input your coordinates to get nearest bar name
 enter longitude:
-55.863474
+45
 enter latitude:
-37.605457
-closest bar: ПИВНОЙ РАЙ(55.860711275878366 37.61269351269725)
+43
+smallest bar: - bar name: Сушистор, seats count: 0, coordinates: (55.837926047147974, 37.53750797872186)
+biggest bar: - bar name: Спорт бар «Красная машина», seats count: 450, coordinates: (55.70111462924677, 37.638228500803905)
+closest bar: - bar name: Бар Виват, seats count: 35, coordinates: (55.44875028, 37.511275)
 
 ```
 
