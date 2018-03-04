@@ -74,10 +74,10 @@ def format_info(bars, coordinates):
         coordinates["longitude"],
         coordinates["latitude"]
     )
-    info = format_bar("smallest bar:", get_smallest_bar(bars))
-    info += format_bar("biggest bar:", get_biggest_bar(bars))
-    info += format_bar("closest bar:", closest_bar)
-    return info
+    output = format_bar("smallest bar:", get_smallest_bar(bars))
+    output += format_bar("biggest bar:", get_biggest_bar(bars))
+    output += format_bar("closest bar:", closest_bar)
+    return output
 
 
 # dirty functions
