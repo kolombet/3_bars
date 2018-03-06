@@ -6,10 +6,9 @@ import argparse
 import os.path
 
 
-def load_json(file_path):
+def load_bars_from_file(file_path):
     with codecs.open(file_path, "r", "utf-8") as json_file:
-        bars = json_file.read()
-        return json.loads(bars)["features"]
+        return json.loads(json_file.read())["features"]
 
 
 def get_biggest_bar(bars):
@@ -58,45 +57,44 @@ def get_args():
 
 def format_bar(label, bar):
     template = "{} - bar name: {}, seats count: {}, coordinates: ({}, {})\n"
-    formatted = template.format(
+    return template.format(
         label,
         get_name(bar),
         str(get_seats_count(bar)),
         str(get_longitude(bar)),
         str(get_latitude(bar))
     )
-    return formatted
 
 
-def format_info(bars, coordinates):
+def print_info(bars, coordinates):
     closest_bar = get_closest_bar(
         bars,
         coordinates["longitude"],
         coordinates["latitude"]
     )
-    output = format_bar("smallest bar:", get_smallest_bar(bars))
-    output += format_bar("biggest bar:", get_biggest_bar(bars))
-    output += format_bar("closest bar:", closest_bar)
-    return output
+    print(format_bar("smallest bar:", get_smallest_bar(bars)))
+    print(format_bar("biggest bar:", get_biggest_bar(bars)))
+    print(format_bar("closest bar:", closest_bar))
 
 
-# dirty functions
+def get_user_input():
+    try:
+        return float(input())
+    except ValueError:
+        return None
+
+
 def request_coordinates():
     print("please input your coordinates to get nearest bar name")
-    print("enter longitude:")
-    try:
-        input_longitude = float(input())
-    except ValueError:
-        return None
-    print("enter latitude:")
-    try:
-        input_latitude = float(input())
-    except ValueError:
-        return None
     return dict(
-        longitude=input_longitude,
-        latitude=input_latitude
+        longitude=request_coordinate("enter longitude:"),
+        latitude=request_coordinate("enter latitude")
     )
+
+
+def request_coordinate(message):
+    print(message)
+    return get_user_input()
 
 
 if __name__ == "__main__":
@@ -105,8 +103,8 @@ if __name__ == "__main__":
     if not os.path.isfile(bars_path):
         sys.exit("error: can't find file {}".format(bars_path))
 
-    bars = load_json(bars_path)
+    bars = load_bars_from_file(bars_path)
     coordinates = request_coordinates()
     if not coordinates:
         sys.exit("error: bad value, please input number")
-    print(format_info(bars, coordinates))
+    print_info(bars, coordinates)
