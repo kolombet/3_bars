@@ -103,8 +103,8 @@ if __name__ == "__main__":
     if not os.path.isfile(bars_path):
         sys.exit("error: can't find file {}".format(bars_path))
 
-    bars = load_bars_from_file(bars_path)
-    coordinates = request_coordinates()
-    if not coordinates:
+    bars_features = load_bars_from_file(bars_path)
+    user_coordinates = request_coordinates()
+    if not user_coordinates:
         sys.exit("error: bad value, please input number")
-    print_info(bars, coordinates)
+    print_info(bars_features, user_coordinates)
