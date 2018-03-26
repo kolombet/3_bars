@@ -72,24 +72,20 @@ def print_info(smallest_bar, biggest_bar, closest_bar):
     print(format_bar("closest bar:", closest_bar))
 
 
-def get_user_input():
-    try:
-        return float(input())
-    except ValueError:
-        return None
-
-
 def request_coordinates():
     print("""To get nearest bar name please input your coordinates -
 longitude and latitude in format {longitude},{latitude}.
 (values must be separated by comma)""")
     separator = ","
-    input_string = input()
-    coordinates = input_string.split(separator)
-    return dict(
-        longitude=float(input_string[0]),
-        latitude=float(input_string[1])
-    )
+    try:
+        input_string = input()
+        coordinates = input_string.split(separator)
+        return dict(
+            longitude=float(coordinates[0]),
+            latitude=float(coordinates[1])
+        )
+    except ValueError:
+        return None
 
 
 if __name__ == "__main__":
@@ -101,7 +97,7 @@ if __name__ == "__main__":
     bars_features = load_bars_from_file(bars_path)
     user_coordinates = request_coordinates()
     if not user_coordinates:
-        sys.exit("error: bad value, please input number")
+        sys.exit("error: bad value")
     closest_bar = get_closest_bar(
         bars_features,
         user_coordinates["longitude"],
