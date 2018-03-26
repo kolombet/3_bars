@@ -80,16 +80,16 @@ def get_user_input():
 
 
 def request_coordinates():
-    print("please input your coordinates to get nearest bar name")
+    print("""To get nearest bar name please input your coordinates -
+longitude and latitude in format {longitude},{latitude}.
+(values must be separated by comma)""")
+    separator = ","
+    input_string = input()
+    coordinates = input_string.split(separator)
     return dict(
-        longitude=request_coordinate("enter longitude:"),
-        latitude=request_coordinate("enter latitude")
+        longitude=float(input_string[0]),
+        latitude=float(input_string[1])
     )
-
-
-def request_coordinate(message):
-    print(message)
-    return get_user_input()
 
 
 if __name__ == "__main__":
