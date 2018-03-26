@@ -56,24 +56,19 @@ def get_args():
 
 
 def format_bar(label, bar):
-    template = "{} - bar name: {}, seats count: {}, coordinates: ({}, {})\n"
+    template = "{} - bar name: {}, seats count: {}, coordinates: ({}, {})"
     return template.format(
         label,
         get_name(bar),
-        str(get_seats_count(bar)),
-        str(get_longitude(bar)),
-        str(get_latitude(bar))
+        get_seats_count(bar),
+        get_longitude(bar),
+        get_latitude(bar)
     )
 
 
-def print_info(bars, coordinates):
-    closest_bar = get_closest_bar(
-        bars,
-        coordinates["longitude"],
-        coordinates["latitude"]
-    )
-    print(format_bar("smallest bar:", get_smallest_bar(bars)))
-    print(format_bar("biggest bar:", get_biggest_bar(bars)))
+def print_info(smallest_bar, biggest_bar, closest_bar):
+    print(format_bar("smallest bar:", smallest_bar))
+    print(format_bar("biggest bar:", biggest_bar))
     print(format_bar("closest bar:", closest_bar))
 
 
@@ -107,4 +102,11 @@ if __name__ == "__main__":
     user_coordinates = request_coordinates()
     if not user_coordinates:
         sys.exit("error: bad value, please input number")
-    print_info(bars_features, user_coordinates)
+    closest_bar = get_closest_bar(
+        bars_features,
+        user_coordinates["longitude"],
+        user_coordinates["latitude"]
+    )
+    smallest_bar = get_smallest_bar(bars_features)
+    biggest_bar = get_biggest_bar(bars_features)
+    print_info(smallest_bar, biggest_bar, closest_bar)
